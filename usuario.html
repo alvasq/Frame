@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresar Usuario</title>
+    <script src="js/jquery.min.js"></script>
+    <script type="module" src="js/firebase.js"></script>
+    <script src="js/angular.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body ng-app="fApp" ng-controller="fControler">
+    <div class="container">
+        <h1>Ingresar Usuario</h1>
+        <form id="userForm" ng-submit="submitForm()">
+            <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" id="nombre" class="form-control" ng-model="usuario.nombre" required>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="codigo" class="form-label">Código</label>
+                    <input type="number" id="codigo" class="form-control" ng-model="usuario.codigo" required>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="dpi" class="form-label">DPI</label>
+                    <input type="text" id="dpi" class="form-control" ng-model="usuario.dpi" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="correo" class="form-label">Correo</label>
+                    <input type="email" id="correo" class="form-control" ng-model="usuario.correo" required>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input type="text" id="direccion" class="form-control" ng-model="usuario.direccion" required>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="distrito" class="form-label">Distrito</label>
+                    <input type="text" id="distrito" class="form-control" ng-model="usuario.distrito" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <input type="text" id="telefono" class="form-control" ng-model="usuario.telefono" required>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="esposa" class="form-label">Esposa</label>
+                    <input type="text" id="esposa" class="form-control" ng-model="usuario.esposa">
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="hijos" class="form-label">Hijos</label>
+                    <input type="text" id="hijos" class="form-control" ng-model="usuario.hijos">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="fraternidad" class="form-label">Fraternidad</label>
+                    <input type="text" id="fraternidad" class="form-control" ng-model="usuario.fraternidad" required>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="nacimiento" class="form-label">Nacimiento</label>
+                    <input type="date" id="nacimiento" class="form-control" ng-model="usuario.nacimiento" required>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="ingresoFrame" class="form-label">Ingreso Frame</label>
+                    <input type="text" id="ingresoFrame" class="form-control" ng-model="usuario.ingresoFrame">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="ingresoMinisterio" class="form-label">Ingreso Ministerio</label>
+                    <input type="text" id="ingresoMinisterio" class="form-control" ng-model="usuario.ingresoMinisterio">
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="perdidaAfiliacion" class="form-label">Pérdida de Afiliación</label>
+                    <input type="text" id="perdidaAfiliacion" class="form-control" ng-model="usuario.perdidaAfiliacion">
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="reingresoFrame" class="form-label">Reingreso Frame</label>
+                    <input type="text" id="reingresoFrame" class="form-control" ng-model="usuario.reingresoFrame">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="beneficiarioGratificacion" class="form-label">Beneficiario Gratificación</label>
+                    <input type="text" id="beneficiarioGratificacion" class="form-control" ng-model="usuario.beneficiarioGratificacion">
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="dpiGratificacion" class="form-label">DPI Gratificación</label>
+                    <input type="text" id="dpiGratificacion" class="form-control" ng-model="usuario.dpiGratificacion">
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="beneficiarioAhorro" class="form-label">Beneficiario Ahorro</label>
+                    <input type="text" id="beneficiarioAhorro" class="form-control" ng-model="usuario.beneficiarioAhorro">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="dpiAhorro" class="form-label">DPI Ahorro</label>
+                    <input type="text" id="dpiAhorro" class="form-control" ng-model="usuario.dpiAhorro">
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="notas" class="form-label">Notas</label>
+                    <textarea id="notas" class="form-control" ng-model="usuario.notas"></textarea>
+                </div>
+                <div class="col-12 col-md-4 mb-3">
+                    <label for="otros" class="form-label">Otros</label>
+                    <textarea id="otros" class="form-control" ng-model="usuario.otros"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+        </form>
+    </div>
+
+    <script type="module" src="js/usuario.js"></script>
+</body>
+
+</html>
