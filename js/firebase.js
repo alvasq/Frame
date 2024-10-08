@@ -24,3 +24,32 @@ console.log("Firebase está inicializado:", app);
 
 export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, db }; // Exporta lo necesario
 
+// Importa las funciones necesarias desde Firebase
+
+
+// Inicializa Firebase (asegúrate de que esto se ejecute antes de usar Firebase)
+
+// Función para verificar y renovar la autenticación
+function checkAuth() {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // Si el usuario está autenticado, renueva el token
+            user.getIdToken(true).then(function (idToken) {
+                console.log("Token renovado: ", idToken);
+                localStorage.setItem("tokenFrame", idToken); // Guarda el token renovado
+            }).catch(function (error) {
+                console.error("Error al renovar el token: ", error);
+            });
+        } else {
+            // Si no hay usuario autenticado, redirige al inicio de sesión
+            window.location.href = "index.html";
+        }
+    });
+}
+
+// Ejecutar la validación al cargar la página
+document.addEventListener('DOMContentLoaded', (event) => {
+    console.log(window.location)
+    checkAuth();
+});
+
