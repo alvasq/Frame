@@ -49,7 +49,9 @@ function checkAuth() {
 
 // Ejecutar la validación al cargar la página
 document.addEventListener('DOMContentLoaded', (event) => {
-    console.log(window.location)
-    checkAuth();
+    if (window.location.pathname!="/Frame/") {
+        checkAuth();
+    }
+    
 });
 
