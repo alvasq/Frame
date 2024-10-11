@@ -19,13 +19,13 @@ Frame.controller('fControler', function ($scope) {
 
     // Función para generar el reporte de usuarios
     $scope.reporteUsuario = function () {
-        alert("Generar Reporte de Usuario");
+        window.location.href="repusuarios.html"
         // Lógica para generar reporte de usuario (puedes agregar más detalles aquí)
     };
 
     // Función para generar el reporte de aportes
     $scope.reporteAportes = function () {
-        alert("Generar Reporte de Aportes");
+        window.location.href="repAportes.html"
         // Lógica para generar reporte de aportes (puedes agregar más detalles aquí)
     };
 });

@@ -7,7 +7,10 @@ import {
     query,
     orderBy,
     limit,
-    addDoc
+    addDoc,
+    doc,
+    updateDoc
+
 } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 import {
     auth,
@@ -15,6 +18,11 @@ import {
     signInWithEmailAndPassword
 } from "./firebase.js";
 const db = getFirestore();
+
+function convertirFecha(fechaStr) {
+    var partes = fechaStr.split('/');
+    return new Date(partes[2], partes[1] - 1, partes[0]); // Asegúrate de restar 1 al mes
+}
 angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
     $scope.aporte = {};
     $scope.meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -25,18 +33,20 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
             const querySnapshot = await getDocs(q);
             console.log(querySnapshot)
             if (!querySnapshot.empty) {
-                $scope.aporte.correlativo = parseFloat(querySnapshot.docs[0].data().correlativo) + 1; 
+                $scope.aporte.correlativo = parseFloat(querySnapshot.docs[0].data().correlativo) + 1;
                 $scope.$apply();
             } else {
-                $scope.aporte.correlativo = 1; 
+                $scope.aporte.correlativo = 1;
             }
+            $scope.aporte.fecha = new Date();
+
         } catch (error) {
             alert("Error al obtener el código: ", error);
         }
     };
     const obtenerAportadores = async () => {
         try {
-            const q = query(collection(db, "tblAportadores"), orderBy("codigo", "desc"), limit(1));
+            const q = query(collection(db, "tblAportadores"), orderBy("codigo", "desc"));
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
                 querySnapshot.docs.forEach(element => {
@@ -47,19 +57,37 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
                     $scope.aportadores.push(data);
                 });
                 console.log($scope.aportadores);
-                $scope.$apply();
+                if (sessionStorage.getItem("obAportes")) {
+                    $scope.type = "edit";
+                    $scope.idAporte = sessionStorage.getItem("idAporte");
+                    $scope.aporte = JSON.parse(sessionStorage.getItem("obAportes"));
+                    $scope.aporte.mes = $scope.aporte.mes.split(" ")[0];
+                    $scope.aporte.fecha = convertirFecha($scope.aporte.fecha)
+                    $scope.aporte.idAfiliado = $scope.aportadores.find(element => element.dpi === $scope.aporte.usuario.split(" ")[0]);
+                    $scope.$apply();
+                    sessionStorage.removeItem('obAportes');
+                    sessionStorage.removeItem('idAporte');
+
+                } else {
+                    $scope.type = "new";
+
+                    obtenerCodigoMaximo();
+                }
+
             }
         } catch (error) {
             console.error("Error al obtener el código: ", error);
         }
     };
-    obtenerCodigoMaximo();
     obtenerAportadores();
+
+
+
     $scope.submitForm = async () => {
         try {
             const docRef = await addDoc(collection(db, "tblAporte"), {
                 correlativo: $scope.aporte.correlativo,
-                idAfiliado: $scope.aporte.id_afiliado,
+                idAfiliado: $scope.aporte.idAfiliado.codigo,
                 fecha: $scope.aporte.fecha,
                 mes: $scope.aporte.mes,
                 ano: $scope.aporte.ano,
@@ -67,12 +95,12 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
                 ahorro: $scope.aporte.ahorro,
             });
             $scope.aporteF = $scope.aporte;
-            $scope.aporteF.token =  docRef.id;
+            $scope.aporteF.token = docRef.id;
             $scope.aporteF.aportador = $scope.aportadores.find(element => element.codigo == $scope.aporteF.id_afiliado)
             correlativo = $scope.aporteF.correlativo;
             $scope.aporte = {};
             $scope.aporte.correlativo = 1;
-            obtenerCodigoMaximo(); 
+            obtenerCodigoMaximo();
             $("#comprobante").click();
             $scope.$apply();
         } catch (error) {
@@ -80,28 +108,50 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
         }
     };
 
+    $scope.editForm = async () => {
+        console.log($scope.aporte)
+        try {
+            const userRef = doc(db, "tblAporte", $scope.idAporte.toString());
+            const nuevosDatos = {
+                correlativo: $scope.aporte.correlativo,
+                idAfiliado: $scope.aporte.idAfiliado.codigo.toString(),
+                fecha: $scope.aporte.fecha,
+                mes: $scope.aporte.mes,
+                ano: $scope.aporte.ano,
+                frame: $scope.aporte.frame,
+                ahorro: $scope.aporte.ahorro
+            };
+            console.log(nuevosDatos)
+            await updateDoc(userRef, nuevosDatos);
+            alert("aporte actualizado correctamente.");
+            window.location.href = "repAportes.html"
+        } catch (error) {
+            console.error("Error al actualizar el aporte:", error);
+            alert("Hubo un error al actualizar el aporte.");
+        }
+    };
+
     $scope.descargar = function () {
-        var element = document.getElementById('dwpdf'); 
+        var element = document.getElementById('dwpdf');
         html2pdf()
             .set({
-                margin: 1, 
-                filename: 'aporte_' + correlativo + '.pdf', 
+                margin: 1,
+                filename: 'aporte_' + correlativo + '.pdf',
                 image: {
                     type: 'jpeg',
                     quality: 0.98
-                }, 
+                },
                 html2canvas: {
                     scale: 2,
                     logging: true
-                }, 
+                },
                 jsPDF: {
                     unit: 'in',
                     format: 'letter',
                     orientation: 'portrait'
-                } 
+                }
             })
             .from(element)
             .save();
     }
 }]);
-

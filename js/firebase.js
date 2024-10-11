@@ -1,8 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"; // Importa Firestore
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
-
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -17,41 +15,37 @@ const firebaseConfig = {
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getDatabase(app); // Inicializa Firestore
+const db = getDatabase(app);
 
-console.log("Firebase está inicializado:", app);
+console.log("Firebase inicializado:", app);
 
+// Exporta las funciones necesarias
+export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, db };
 
-export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, db }; // Exporta lo necesario
-
-// Importa las funciones necesarias desde Firebase
-
-
-// Inicializa Firebase (asegúrate de que esto se ejecute antes de usar Firebase)
-
-// Función para verificar y renovar la autenticación
+// Verificar y renovar autenticación
 function checkAuth() {
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // Si el usuario está autenticado, renueva el token
-            user.getIdToken(true).then(function (idToken) {
-                console.log("Token renovado: ", idToken);
-                localStorage.setItem("tokenFrame", idToken); // Guarda el token renovado
-            }).catch(function (error) {
+            user.getIdToken(true).then(idToken => {
+                localStorage.setItem("tokenFrame", idToken);
+            }).catch(error => {
                 console.error("Error al renovar el token: ", error);
             });
         } else {
-            // Si no hay usuario autenticado, redirige al inicio de sesión
             window.location.href = "index.html";
         }
     });
 }
 
 // Ejecutar la validación al cargar la página
-document.addEventListener('DOMContentLoaded', (event) => {
-    if (window.location.pathname!="/Frame/") {
-        checkAuth();
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    const validPaths = ["/Frame/", "http://localhost:1234/"];
     
+    // Verificar solo si la ruta actual no es válida
+    if (!validPaths.includes(window.location.pathname) && !validPaths.includes(window.location.href)) {
+        if (!localStorage.getItem("authChecked")) {
+            checkAuth();
+            localStorage.setItem("authChecked", "true"); // Marcar que se ha verificado
+        }
+    }
 });
-
