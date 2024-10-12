@@ -75,46 +75,49 @@
             </div>
 
         </form>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>opciones</th>
-                    <th>ID Afiliado</th>
-                    <th>Fecha</th>
-                    <th>Frame</th>
-                    <th>Ahorro</th>
-                    <th>Mes y Año</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="x in resultados">
-
-                    <td style="padding: 0;" class="d-flex">
-                        <button class="btn btn-warning" style="width: 50%; height: 100%;" ng-click="edit(x.id)"><i
-                                class="las la-user-edit"></i></button>
-                        <button class="btn btn-primary" style="width: 50%; height: 100%;" ng-click="ver(x.id)"><i <i
-                                class="las la-file-alt"></i></button>
-                    </td>
-                    <td>{{ x.usuario}}</td>
-                    <td>{{ x.fecha | date: 'dd/MM/yyyy' }}</td>
-                    <td>{{ x.frame | currency:"Q":2}}</td>
-                    <td>{{ x.ahorro |currency:"Q":2}}</td>
-                    <td>{{ x.mes }}</td>
-                </tr>
-                <tr ng-show="resultados.length > 0">
-                    <td class="text-end" colspan="3">
-                        <b>Total</b>
-                    </td>
-
-                    <td>{{ totalFrame | currency:"Q":2}}</td>
-                    <td>{{ totalAhorro |currency:"Q":2}}</td>
-                    <td>
-
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>opciones</th>
+                        <th>ID Afiliado</th>
+                        <th>Fecha</th>
+                        <th>Frame</th>
+                        <th>Ahorro</th>
+                        <th>Mes y Año</th>
+    
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="x in resultados">
+    
+                        <td style="padding: 0;" class="d-flex">
+                            <button class="btn btn-warning" style="width: 50%; height: 100%;" ng-click="edit(x.id)"><i
+                                    class="las la-user-edit"></i></button>
+                            <button class="btn btn-primary" style="width: 50%; height: 100%;" ng-click="ver(x.id)"><i <i
+                                    class="las la-file-alt"></i></button>
+                        </td>
+                        <td>{{ x.usuario}}</td>
+                        <td>{{ x.fecha | date: 'dd/MM/yyyy' }}</td>
+                        <td>{{ x.frame | currency:"Q":2}}</td>
+                        <td>{{ x.ahorro |currency:"Q":2}}</td>
+                        <td>{{ x.mes }}</td>
+                    </tr>
+                    <tr ng-show="resultados.length > 0">
+                        <td class="text-end" colspan="3">
+                            <b>Total</b>
+                        </td>
+    
+                        <td>{{ totalFrame | currency:"Q":2}}</td>
+                        <td>{{ totalAhorro |currency:"Q":2}}</td>
+                        <td>
+    
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+       
     </div>
     <button type="button" id="comprobante" class="btn btn-primary mt-3 d-none" data-bs-toggle="modal"
         data-bs-target="#exampleModal">
