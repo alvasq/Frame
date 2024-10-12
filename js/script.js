@@ -12,7 +12,7 @@ Frame.controller('fControler', function ($scope) {
             localStorage.setItem("userFrame", userCredential.user.email);
             const idToken = await userCredential.user.getIdToken();
             localStorage.setItem("tokenFrame", idToken);
-            window.location.href = "opciones.html";
+            window.location.href = "opciones";
         } catch (error) {
             console.error("Error en el inicio de sesión: ", error);
             alert(error.message);
