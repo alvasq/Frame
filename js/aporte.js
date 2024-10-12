@@ -31,7 +31,6 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
         try {
             const q = query(collection(db, "tblAporte"), orderBy("correlativo", "desc"), limit(1));
             const querySnapshot = await getDocs(q);
-            console.log(querySnapshot)
             if (!querySnapshot.empty) {
                 $scope.aporte.correlativo = parseFloat(querySnapshot.docs[0].data().correlativo) + 1;
                 $scope.$apply();
@@ -56,7 +55,6 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
                     }
                     $scope.aportadores.push(data);
                 });
-                console.log($scope.aportadores);
                 if (sessionStorage.getItem("obAportes")) {
                     $scope.type = "edit";
                     $scope.idAporte = sessionStorage.getItem("idAporte");
@@ -109,7 +107,6 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
     };
 
     $scope.editForm = async () => {
-        console.log($scope.aporte)
         try {
             const userRef = doc(db, "tblAporte", $scope.idAporte.toString());
             const nuevosDatos = {
@@ -121,7 +118,6 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
                 frame: $scope.aporte.frame,
                 ahorro: $scope.aporte.ahorro
             };
-            console.log(nuevosDatos)
             await updateDoc(userRef, nuevosDatos);
             alert("aporte actualizado correctamente.");
             window.location.href = "repAportes.html"

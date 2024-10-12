@@ -13,7 +13,7 @@ const app = angular.module('fApp', []);
 
 app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) {
     const db = getFirestore();
-
+    var correlativo=0;
     $scope.resultados = [];
     $scope.aportadores = [];
     $scope.totalFrame = 0;
@@ -31,7 +31,6 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
                     }
                     $scope.aportadores.push(data);
                 });
-                console.log($scope.aportadores);
                 $scope.$apply();
             }
         } catch (error) {
@@ -42,7 +41,6 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
     obtenerAportadores();
 
     $scope.$watch('resultados', function () {
-        console.log($scope.resultados);
     });
 
     $scope.consultarAportes = async () => {
@@ -113,6 +111,23 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
         window.location.href = "aportes.html";
     }
 
+    $scope.ver =function(identificador){
+        $scope.aporteF= $scope.resultados.find(element => element.id = identificador)
+        var elm = {
+            correlativo:$scope.aporteF.correlativo,
+            token:$scope.aporteF.id,
+            aportador:$scope.aportadores.find(element => element.idAfiliado==$scope.aporteF.idAfiliado),
+            fecha:$scope.aporteF.fecha,
+            mes:$scope.aporteF.mes2,
+            ano:$scope.aporteF.ano,
+            frame:$scope.aporteF.frame,
+            ahorro:$scope.aporteF.ahorro
+        };
+        correlativo=elm.correlativo;
+        $scope.aportef=elm;
+        $("#comprobante").click();
+    }
+
     $scope.descargar = function () {
         var arreglo = [];
 
@@ -146,6 +161,30 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
 
         exportJsonToExcel(arreglo, title, 'Aportes.xlsx');
     };
+
+    $scope.descargar2 = function () {
+        var element = document.getElementById('dwpdf');
+        html2pdf()
+            .set({
+                margin: 1,
+                filename: 'aporte_' + correlativo + '.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 2,
+                    logging: true
+                },
+                jsPDF: {
+                    unit: 'in',
+                    format: 'letter',
+                    orientation: 'portrait'
+                }
+            })
+            .from(element)
+            .save();
+    }
 
 
 }]);

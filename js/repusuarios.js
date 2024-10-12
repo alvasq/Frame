@@ -24,7 +24,6 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
         try {
             const q = query(collection(db, "tblAportadores"), orderBy("codigo", "desc"));
             const querySnapshot = await getDocs(q);
-            console.log(querySnapshot)
             if (!querySnapshot.empty) {
                 querySnapshot.docs.forEach(element => {
                     let data = element.data();
@@ -36,7 +35,6 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
                     data.reingresoFrame = new Date(data.reingresoFrame.seconds * 1000).toLocaleDateString();
                     $scope.aportadores.push(data);
                 });
-                console.log($scope.aportadores);
                 $scope.$apply();
             }
         } catch (error) {
@@ -81,7 +79,6 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
     };
 
     $scope.edit = function (identificador) {
-        console.log(identificador)
         sessionStorage.setItem("idUsuario", identificador);
         var arreglo = $scope.aportadores.find(element => element.id = identificador)
         sessionStorage.setItem("obUsuario", JSON.stringify(arreglo));

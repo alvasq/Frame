@@ -35,7 +35,6 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
         try {
             const q = query(collection(db, "tblAportadores"), orderBy("codigo", "desc"), limit(1));
             const querySnapshot = await getDocs(q);
-            console.log(querySnapshot)
             if (!querySnapshot.empty) {
                 $scope.usuario.codigo = parseFloat(querySnapshot.docs[0].data().codigo) + 1; // Incrementa en 1
                 $scope.$apply();
@@ -93,7 +92,6 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
                 otros: $scope.usuario.otros
             });
 
-            console.log("Usuario guardado con ID: ", docRef.id);
             // Aquí puedes agregar lógica adicional, como limpiar el formulario o mostrar un mensaje de éxito
             $scope.usuario = {}; // Limpiar el formulario
             $scope.usuario.codigo = 1; // Reiniciar el código para el siguiente usuario

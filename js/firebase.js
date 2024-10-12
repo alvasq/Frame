@@ -17,7 +17,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-console.log("Firebase inicializado:", app);
 
 // Exporta las funciones necesarias
 export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, db };
