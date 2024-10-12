@@ -16,17 +16,22 @@
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+    <link rel="icon" href="img/favicon.jpg" type="image/jpg">
+
+
 </head>
 
 <body ng-app="fApp" ng-controller="fControler">
     <div class="container mt-4">
-        
+
         <div class="row">
             <div class="col-6">
                 <h1 class="mb-4">Guardar Aportes</h1>
             </div>
             <div class="col-6 text-end">
-                <button class="btn btn-success d-inline" onclick="window.location.href='opciones.html'"><i class="las la-home"></i></button>
+                <button class="btn btn-success d-inline" onclick="window.location.href='opciones.html'"><i
+                        class="las la-home"></i></button>
             </div>
         </div>
         <form>
@@ -37,9 +42,9 @@
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="id_afiliado" class="form-label">ID Afiliado</label>
-                        <select class="form-control ng-pristine ng-valid ng-not-empty ng-touched"
-                          ng-model="aporte.idAfiliado"
-                          ng-options="x as x.dpi + ' '+ x.nombre for x in aportadores"></select>
+                    <select class="form-control ng-pristine ng-valid ng-not-empty ng-touched"
+                        ng-model="aporte.idAfiliado"
+                        ng-options="x as x.dpi + ' '+ x.nombre for x in aportadores"></select>
                 </div>
             </div>
 
