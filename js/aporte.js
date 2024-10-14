@@ -111,7 +111,7 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
             const userRef = doc(db, "tblAporte", $scope.idAporte.toString());
             const nuevosDatos = {
                 correlativo: $scope.aporte.correlativo,
-                idAfiliado: $scope.aporte.idAfiliado.codigo.toString(),
+                idAfiliado: $scope.aporte.idAfiliado.codigo,
                 fecha: $scope.aporte.fecha,
                 mes: $scope.aporte.mes,
                 ano: $scope.aporte.ano,
