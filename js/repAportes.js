@@ -55,7 +55,7 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
             let conditions = [];
 
             if ($scope.idAfiliado) {
-                conditions.push(where("idAfiliado", "==", $scope.idAfiliado));
+                conditions.push(where("idAfiliado", "==", parseInt($scope.idAfiliado)));
             }
             if ($scope.fechaInicio) {
                 conditions.push(where("fecha", ">=", new Date($scope.fechaInicio)));
@@ -63,7 +63,6 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
             if ($scope.fechaFin) {
                 conditions.push(where("fecha", "<=", new Date($scope.fechaFin)));
             }
-
             if (conditions.length === 0) {
                 alert("Debe ingresar al menos un criterio de búsqueda.");
                 return;

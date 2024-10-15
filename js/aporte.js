@@ -110,8 +110,8 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
         try {
             const userRef = doc(db, "tblAporte", $scope.idAporte.toString());
             const nuevosDatos = {
-                correlativo: $scope.aporte.correlativo,
-                idAfiliado: $scope.aporte.idAfiliado.codigo,
+                correlativo: parseInt($scope.aporte.correlativo),
+                idAfiliado: parseInt($scope.aporte.idAfiliado.codigo),
                 fecha: $scope.aporte.fecha,
                 mes: $scope.aporte.mes,
                 ano: $scope.aporte.ano,

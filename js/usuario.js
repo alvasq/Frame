@@ -108,6 +108,7 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
         try {
             const userRef = doc(db, "tblAportadores", $scope.usuario.id.toString());
             const nuevosDatos = {
+                codigo: parseInt($scope.usuario.codigo),
                 nombre: $scope.usuario.nombre,
                 dpi: $scope.usuario.dpi,
                 correo: $scope.usuario.correo,
