@@ -115,7 +115,7 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
         var elm = {
             correlativo:$scope.aporteF.correlativo,
             token:$scope.aporteF.id,
-            aportador:$scope.aportadores.find(element => element.idAfiliado==$scope.aporteF.idAfiliado),
+            aportador:$scope.aportadores.find(element => element.codigo==$scope.aporteF.idAfiliado),
             fecha:$scope.aporteF.fecha,
             mes:$scope.aporteF.mes2,
             ano:$scope.aporteF.ano,
@@ -123,7 +123,7 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
             ahorro:$scope.aporteF.ahorro
         };
         correlativo=elm.correlativo;
-        $scope.aportef=elm;
+        $scope.aporteF=elm;
         $("#comprobante").click();
     }
 

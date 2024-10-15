@@ -94,7 +94,7 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
             });
             $scope.aporteF = $scope.aporte;
             $scope.aporteF.token = docRef.id;
-            $scope.aporteF.aportador = $scope.aportadores.find(element => element.codigo == $scope.aporteF.id_afiliado)
+            $scope.aporteF.aportador = $scope.aportadores.find(element => element.codigo == $scope.aporte.idAfiliado.codigo)
             correlativo = $scope.aporteF.correlativo;
             $scope.aporte = {};
             $scope.aporte.correlativo = 1;
