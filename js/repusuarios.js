@@ -14,6 +14,9 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword
 } from "./firebase.js";
+function formatFirestoreDate(timestamp) {
+    return timestamp?.seconds != null ? new Date(timestamp.seconds * 1000).toLocaleDateString() : null;
+}
 const db = getFirestore();
 angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
     $scope.aporte = {};
@@ -25,16 +28,21 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
             const q = query(collection(db, "tblAportadores"), orderBy("codigo", "desc"));
             const querySnapshot = await getDocs(q);
             if (!querySnapshot.empty) {
+                
+                
                 querySnapshot.docs.forEach(element => {
                     let data = element.data();
                     data.id = element.id;
-                    data.nacimiento = new Date(data.nacimiento.seconds * 1000).toLocaleDateString();
-                    data.ingresoFrame = new Date(data.ingresoFrame.seconds * 1000).toLocaleDateString();
-                    data.ingresoMinisterio = new Date(data.ingresoMinisterio.seconds * 1000).toLocaleDateString();
-                    data.perdidaAfiliacion = new Date(data.perdidaAfiliacion.seconds * 1000).toLocaleDateString();
-                    data.reingresoFrame = new Date(data.reingresoFrame.seconds * 1000).toLocaleDateString();
+                
+                    data.nacimiento = formatFirestoreDate(data.nacimiento);
+                    data.ingresoFrame = formatFirestoreDate(data.ingresoFrame);
+                    data.ingresoMinisterio = formatFirestoreDate(data.ingresoMinisterio);
+                    data.perdidaAfiliacion = formatFirestoreDate(data.perdidaAfiliacion);
+                    data.reingresoFrame = formatFirestoreDate(data.reingresoFrame);
+                
                     $scope.aportadores.push(data);
                 });
+                
                 $scope.$apply();
             }
         } catch (error) {
