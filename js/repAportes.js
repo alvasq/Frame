@@ -105,7 +105,7 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
 
     $scope.edit = function (identificador) {
         sessionStorage.setItem("idAporte", identificador);
-        var arreglo = $scope.resultados.find(element => element.id = identificador)
+        var arreglo = $scope.resultados.find(element => element.id == identificador)
         sessionStorage.setItem("obAportes", JSON.stringify(arreglo));
         window.location.href = "aportes.html";
     }
