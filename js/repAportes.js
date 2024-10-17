@@ -111,7 +111,7 @@ app.controller('fControler', ['$scope', '$timeout', function ($scope, $timeout) 
     }
 
     $scope.ver =function(identificador){
-        $scope.aporteF= $scope.resultados.find(element => element.id = identificador)
+        $scope.aporteF= $scope.resultados.find(element => element.id == identificador)
         var elm = {
             correlativo:$scope.aporteF.correlativo,
             token:$scope.aporteF.id,
