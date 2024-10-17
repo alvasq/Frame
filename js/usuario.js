@@ -22,8 +22,12 @@ import {
 const db = getFirestore();
 
 function convertirFecha(fechaStr) {
-    var partes = fechaStr.split('/');
-    return new Date(partes[2], partes[1] - 1, partes[0]); // Asegúrate de restar 1 al mes
+    if (fechaStr!=null) {
+        var partes = fechaStr.split('/');
+        return new Date(partes[2], partes[1] - 1, partes[0]); // Asegúrate de restar 1 al mes            
+    }else{
+        return null;
+    }
 }
 
 // Controlador de AngularJS
