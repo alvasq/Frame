@@ -88,7 +88,7 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
 
     $scope.edit = function (identificador) {
         sessionStorage.setItem("idUsuario", identificador);
-        var arreglo = $scope.aportadores.find(element => element.id = identificador)
+        var arreglo = $scope.aportadores.find(element => element.id ==identificador)
         sessionStorage.setItem("obUsuario", JSON.stringify(arreglo));
         window.location.href = "usuario.html";
     }
