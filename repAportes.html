@@ -27,16 +27,17 @@
     <div class="container mt-5">
         <div class="row">
             <div class="col-6">
-                <h2 class="d-inline">Reporte de Aportes</h2> 
+                <h2 class="d-inline">Reporte de Aportes</h2>
                 <h2>Consultar Aportes</h2>
             </div>
             <div class="col-6 text-end">
-                <button class="btn btn-success d-inline" onclick="window.location.href='opciones'"><i class="las la-home"></i></button>
+                <button class="btn btn-success d-inline" onclick="window.location.href='opciones.html'">
+                    <i class="las la-home"></i>
+                </button>
             </div>
         </div>
-       
-        <form>
 
+        <form>
             <div class="row">
                 <div class="col-12 col-md-4">
                     <div class="form-group">
@@ -85,39 +86,45 @@
                         <th>Frame</th>
                         <th>Ahorro</th>
                         <th>Mes y Año</th>
-    
+                        <th>Creador</th>
+                        <th>Estado</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="x in resultados">
-    
+
                         <td style="padding: 0;" class="d-flex">
-                            <button class="btn btn-warning" style="width: 50%; height: 100%;" ng-click="edit(x.id)"><i
+                            <button  ng-show="x.estado!='Eliminado'" class="btn btn-warning" style="width: 30%; height: 100%;" ng-click="edit(x.id)"><i
                                     class="las la-user-edit"></i></button>
-                            <button class="btn btn-primary" style="width: 50%; height: 100%;" ng-click="ver(x.id)"><i <i
+                            <button class="btn btn-primary" style="width: 30%; height: 100%;" ng-click="ver(x.id)"><i <i
                                     class="las la-file-alt"></i></button>
+                            <button  ng-show="x.estado!='Eliminado'" class="btn btn-danger" style="width: 30%; height: 100%;"
+                                ng-click="delete(x.id)"><i class="las la-trash"></i></button>
                         </td>
                         <td>{{ x.usuario}}</td>
                         <td>{{ x.fecha | date: 'dd/MM/yyyy' }}</td>
                         <td>{{ x.frame | currency:"Q":2}}</td>
                         <td>{{ x.ahorro |currency:"Q":2}}</td>
                         <td>{{ x.mes }}</td>
+                        <td>{{x.creador}}</td>
+                        <td>{{x.estado}}</td>
                     </tr>
                     <tr ng-show="resultados.length > 0">
                         <td class="text-end" colspan="3">
                             <b>Total</b>
                         </td>
-    
+
                         <td>{{ totalFrame | currency:"Q":2}}</td>
                         <td>{{ totalAhorro |currency:"Q":2}}</td>
                         <td>
-    
+
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-       
+
     </div>
     <button type="button" id="comprobante" class="btn btn-primary mt-3 d-none" data-bs-toggle="modal"
         data-bs-target="#exampleModal">

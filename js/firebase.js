@@ -1,16 +1,17 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
 
 // Configuración de Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyD0z_ZZHK53i5Sk5Ddi4dn-ytqZfXIrHm0",
-    authDomain: "controlframe-f315b.firebaseapp.com",
-    projectId: "controlframe-f315b",
-    storageBucket: "controlframe-f315b.appspot.com",
-    messagingSenderId: "1001869693332",
-    appId: "1:1001869693332:web:aecfb621e7e73590657f81"
-};
+    apiKey: "AIzaSyDzh7xcrhiQ3Bs-KfooM_TLjP2pCWr-0xE",
+    authDomain: "controlframe-35d38.firebaseapp.com",
+    projectId: "controlframe-35d38",
+    storageBucket: "controlframe-35d38.firebasestorage.app",
+    messagingSenderId: "831744000341",
+    appId: "1:831744000341:web:46a4325016bbe4a20eafdc",
+    measurementId: "G-STPEY5NXYD"
+}
 
 // Inicializa Firebase
 const app = initializeApp(firebaseConfig);
@@ -19,7 +20,7 @@ const db = getDatabase(app);
 
 
 // Exporta las funciones necesarias
-export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, db };
+export { auth, createUserWithEmailAndPassword, db, signInWithEmailAndPassword };
 
 // Verificar y renovar autenticación
 function checkAuth() {

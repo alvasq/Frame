@@ -2,21 +2,16 @@ var app = angular.module('fApp', []);
 
 // Importa las funciones necesarias desde Firebase
 import {
-    getFirestore,
-    collection,
-    getDocs,
-    query,
-    orderBy,
-    limit,
     addDoc,
+    collection,
     doc,
+    getDocs,
+    getFirestore,
+    limit,
+    orderBy,
+    query,
     updateDoc
 } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
-import {
-    auth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword
-} from "./firebase.js";
 
 // Inicializa Firestore
 const db = getFirestore();
@@ -44,6 +39,8 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
                 $scope.$apply();
             } else {
                 $scope.usuario.codigo = 1; // Si no hay códigos, inicia en 1
+                $scope.$apply();
+
             }
         } catch (error) {
             console.error("Error al obtener el código: ", error);
@@ -93,7 +90,9 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
                 beneficiarioAhorro: $scope.usuario.beneficiarioAhorro,
                 dpiAhorro: $scope.usuario.dpiAhorro,
                 notas: $scope.usuario.notas,
-                otros: $scope.usuario.otros
+                otros: $scope.usuario.otros,
+                creador:localStorage.getItem("userFrame"),
+                estado:0
             });
 
             // Aquí puedes agregar lógica adicional, como limpiar el formulario o mostrar un mensaje de éxito
@@ -111,6 +110,18 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
     $scope.editForm = async () => {
         try {
             const userRef = doc(db, "tblAportadores", $scope.usuario.id.toString());
+            if ($scope.usuario.creador) {
+                $scope.usuario.creador +=
+                  "\n, " +
+                  new Date().toISOString() +
+                  " " +
+                  localStorage.getItem("userFrame");
+              } else {
+                $scope.usuario.creador =
+                  new Date().toISOString() +
+                  " " +
+                  localStorage.getItem("userFrame");
+              }
             const nuevosDatos = {
                 codigo: parseInt($scope.usuario.codigo),
                 nombre: $scope.usuario.nombre,
@@ -132,7 +143,9 @@ angular.module('fApp').controller('fControler', ['$scope', function ($scope) {
                 beneficiarioAhorro: $scope.usuario.beneficiarioAhorro,
                 dpiAhorro: $scope.usuario.dpiAhorro,
                 notas: $scope.usuario.notas,
-                otros: $scope.usuario.otros
+                otros: $scope.usuario.otros,
+                creador:$scope.usuario.creador,
+                estado:1
             };
 
             // Actualiza el documento en Firestore
