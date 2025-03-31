@@ -1,15 +1,15 @@
 var app = angular.module("fApp", []);
 var correlativo = 0;
 import {
-    addDoc,
-    collection,
-    doc,
-    getDocs,
-    getFirestore,
-    limit,
-    orderBy,
-    query,
-    updateDoc,
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  limit,
+  orderBy,
+  query,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 const db = getFirestore();
 
@@ -73,7 +73,9 @@ angular.module("fApp").controller("fControler", [
               ).toLocaleDateString();
             }
             $scope.aportadores.push(data);
+            
           });
+          $scope.$apply();
           if (sessionStorage.getItem("obAportes")) {
             $scope.type = "edit";
             $scope.idAporte = sessionStorage.getItem("idAporte");
