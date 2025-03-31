@@ -72,7 +72,9 @@ angular.module("fApp").controller("fControler", [
                 data.nacimiento.seconds * 1000
               ).toLocaleDateString();
             }
-            $scope.aportadores.push(data);
+            if (data.estado!=2) {
+              $scope.aportadores.push(data);
+            }
             
           });
           $scope.$apply();
