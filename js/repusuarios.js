@@ -1,70 +1,43 @@
 var app = angular.module("fApp", []);
 var correlativo = 0;
-import {
-    collection,
-    doc,
-    getDocs,
-    getFirestore,
-    orderBy,
-    query,
-    updateDoc,
-    where,
-} from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+import { collection, doc, getDocs, getFirestore, orderBy, query, updateDoc } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 function formatFirestoreDate(timestamp) {
-  return timestamp?.seconds != null
-    ? new Date(timestamp.seconds * 1000).toLocaleDateString()
-    : null;
+  return timestamp?.seconds != null ? new Date(timestamp.seconds * 1000).toLocaleDateString() : null;
 }
 const db = getFirestore();
 angular.module("fApp").controller("fControler", [
   "$scope",
   function ($scope) {
     $scope.aporte = {};
-    $scope.meses = [
-      "Enero",
-      "Febrero",
-      "Marzo",
-      "Abril",
-      "Mayo",
-      "Junio",
-      "Julio",
-      "Agosto",
-      "Septiembre",
-      "Octubre",
-      "Noviembre",
-      "Diciembre",
-    ];
+    $scope.meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     $scope.aportadores = [];
 
     const obtenerAportadores = async () => {
       try {
         const aportesRef = collection(db, "tblAportadores");
-        let conditions = [];
-        conditions.push(where("estado", "!=", 2));
+
         let q = query(
           aportesRef,
-          ...conditions,
-          orderBy("estado"),
-          orderBy("codigo", "desc")
+          orderBy("codigo", "desc") // Solo ordenamos por código
         );
         const querySnapshot = await getDocs(q);
-        console.log(querySnapshot.empty)
+
+        $scope.aportadores = [];
+
         if (!querySnapshot.empty) {
           querySnapshot.docs.forEach(element => {
-
             let data = element.data();
-            console.log(data)
+
+            // Filtrar manualmente en JS
+            if (data.estado == 2) return;
+
             data.id = element.id;
             data.nacimiento = formatFirestoreDate(data.nacimiento);
             data.ingresoFrame = formatFirestoreDate(data.ingresoFrame);
-            data.ingresoMinisterio = formatFirestoreDate(
-              data.ingresoMinisterio
-            );
-            data.perdidaAfiliacion = formatFirestoreDate(
-              data.perdidaAfiliacion
-            );
+            data.ingresoMinisterio = formatFirestoreDate(data.ingresoMinisterio);
+            data.perdidaAfiliacion = formatFirestoreDate(data.perdidaAfiliacion);
             data.reingresoFrame = formatFirestoreDate(data.reingresoFrame);
-            console.log(data);
+
             switch (data.estado) {
               case 0:
                 data.estado = "nuevo";
@@ -79,6 +52,7 @@ angular.module("fApp").controller("fControler", [
                 data.estado = "";
                 break;
             }
+
             $scope.aportadores.push(data);
           });
 
@@ -88,6 +62,7 @@ angular.module("fApp").controller("fControler", [
         console.error("Error al obtener el código: ", error);
       }
     };
+
     obtenerAportadores();
 
     $scope.descargar = function () {
@@ -122,40 +97,14 @@ angular.module("fApp").controller("fControler", [
         arreglo.push(elm);
       });
 
-      var title = [
-        "Codigo",
-        "Nombre",
-        "DPI",
-        "Correo",
-        "Dirección",
-        "Distrito",
-        "Teléfono",
-        "Esposa",
-        "Hijos",
-        "Fraternidad",
-        "Nacimiento",
-        "Ingreso Frame",
-        "Ingreso Ministerio",
-        "Pérdida Afiliación",
-        "Reingreso Frame",
-        "Beneficiario Gratificación",
-        "DPI Gratificación",
-        "Beneficiario Ahorro",
-        "DPI Ahorro",
-        "Notas",
-        "Otros",
-        "creador",
-        "estado",
-      ];
+      var title = ["Codigo", "Nombre", "DPI", "Correo", "Dirección", "Distrito", "Teléfono", "Esposa", "Hijos", "Fraternidad", "Nacimiento", "Ingreso Frame", "Ingreso Ministerio", "Pérdida Afiliación", "Reingreso Frame", "Beneficiario Gratificación", "DPI Gratificación", "Beneficiario Ahorro", "DPI Ahorro", "Notas", "Otros", "creador", "estado"];
 
       exportJsonToExcel(arreglo, title, "Usuarios.xlsx");
     };
 
     $scope.edit = function (identificador) {
       sessionStorage.setItem("idUsuario", identificador);
-      var arreglo = $scope.aportadores.find(
-        element => element.id == identificador
-      );
+      var arreglo = $scope.aportadores.find(element => element.id == identificador);
       sessionStorage.setItem("obUsuario", JSON.stringify(arreglo));
       window.location.href = "usuario.html";
     };
@@ -165,20 +114,11 @@ angular.module("fApp").controller("fControler", [
       try {
         if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
           const userRef = doc(db, "tblAportadores", idUsuario.toString());
-          const usuario = $scope.aportadores.find(
-            element => element.id == idUsuario
-          );
+          const usuario = $scope.aportadores.find(element => element.id == idUsuario);
           if (usuario.creador) {
-            usuario.creador +=
-              "\n, " +
-              new Date().toISOString() +
-              " " +
-              localStorage.getItem("userFrame");
+            usuario.creador += "\n, " + new Date().toISOString() + " " + localStorage.getItem("userFrame");
           } else {
-            usuario.creador =
-              new Date().toISOString() +
-              " " +
-              localStorage.getItem("userFrame");
+            usuario.creador = new Date().toISOString() + " " + localStorage.getItem("userFrame");
           }
           console.log(usuario);
           try {
